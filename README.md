@@ -1,6 +1,6 @@
 # 一步步带你构建 Spring Boot + Docker 应用
 
-本文将一步步带你构建一个基于 Spring Boot 和 Docker 的应用，并通过 Docker 镜像将该应用部署在网易蜂巢，创建容器服务，实现在线运行。
+本文将一步步带你构建一个基于 `Spring Boot` 和 `Docker` 的单体应用，并通过 Docker 镜像将该应用部署在`网易蜂巢`，创建容器服务，实现在线运行。
 
 ## 前置知识
 ### Spring Boot 简介
@@ -13,6 +13,9 @@ Docker 是一套以容器技术为核心的，用于应用的构建、分发和�
 
 官网地址：https://docker.com
 
+### 单体应用
+通俗地讲，“单体应用（monolith application）”就是将应用程序的所有功能都打包成一个独立的单元，可以是JAR、WAR、EAR或其它归档格式。
+
 ### 网易蜂巢简介
 由网易公司推出的专业的容器云平台，深度整合了 IaaS、PaaS 及容器技术，提供弹性计算、DevOps 工具链及微服务基础设施等服务，帮助企业解决 IT、架构及运维等问题，使企业更聚焦于业务，是新一代的云计算平台。
 
@@ -20,8 +23,8 @@ Docker 是一套以容器技术为核心的，用于应用的构建、分发和�
 
 ## 前置条件
 * 操作系统：64位，系统不限（需支持Docker），Windows 上建议安装 [Git 客户端](https://git-scm.com/download/win)，方便支持 Linux 命令行操作
-* JDK 1.8 +
-* Maven 3.0 +
+* JDK 1.8 + ：推荐一款 Java 环境管理工具 [jenv](http://jenv.io/)
+* Maven 3.0 + ：建议用杭研的 [Maven](http://mvn.hz.netease.com/) 仓库
 * Docker
     * Linux安装教程参考：https://docs.docker.com/engine/installation/linux/
     * 如果你使用的是Mac或Windows，官方已有原生应用支持，下载地址：https://docs.docker.com/
@@ -44,7 +47,7 @@ touch pom.xml
 
 在当前目录下新建子目录：
 ```shell
-mkdir -p src/main/java/com/163/c/hello
+mkdir -p src/main/java/com/bingohuang/hello
 ```
 
 一个典型的 **Maven** 项目结构如下：
@@ -55,9 +58,8 @@ spring-boot-docker-cloudcomb
     └── main
         └── java
             └── com
-                └── 163
-                    └── c
-                        └── hello
+                └── bingohuang
+                    └── hello
 ```
 
 ### 第二步：配置 pom 文件
@@ -68,7 +70,7 @@ spring-boot-docker-cloudcomb
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>c.163.com</groupId>
+    <groupId>bingohuang.com</groupId>
     <artifactId>spring-boot-docker-cloudcomb</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
@@ -118,10 +120,10 @@ spring-boot-docker-cloudcomb
 ### 第三步：编写 Spring Boot 应用
 创建一个简单的 Java 应用程序:
 ```shell
-touch src/main/java/com/163/c/hello/Application.java
+touch src/main/java/com/bingohuang/hello/Application.java
 ```
 ```java
-package hello;
+package com.bingohuang.hello;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -165,10 +167,9 @@ spring-boot-docker-cloudcomb
     └── main
         └── java
             └── com
-                └── 163
-                    └── c
-                        └── hello
-                            └── Application.java
+                └── binghuang
+                    └── hello
+                        └── Application.java
 ```
 在根目录执行：
 ```shell
@@ -226,10 +227,9 @@ spring-boot-docker-cloudcomb
     └── main
         └── java
             └── com
-                └── 163
-                    └── c
-                        └── hello
-                            └── Application.java
+                └── bingohuang
+                    └── hello
+                        └── Application.java
 ```
 #### docker 构建
 在项目根目录下执行 docker 构建镜像命令：
@@ -263,7 +263,7 @@ Hello Spring Boot, Docker and CloudComb!
 ```
 
 ### 第六步：推送镜像到网易蜂巢
-首先，需要有一个网易蜂巢的账号，可在蜂巢首页（https://c.163.com/）注册。
+首先，需要有一个网易蜂巢的账号，可在[蜂巢首页](https://c.163.com/)注册。
 
 接下来，在命令行中登录蜂巢镜像仓库：
 ```shell
@@ -306,9 +306,8 @@ docker push hub.c.163.com/bingohuang/spring-boot-docker-cloudcomb:0.1.0
 ![image](http://163yun.nos-eastchina1.126.net/image%2Fspring-boot-docker-cloudcomb-6.jpg)
 
 打开浏览器，访问服务：`http://59.111.114.43:8080/`，发现同样输出了：
-```shell
-Hello Spring Boot, Docker and CloudComb!
-```
+
+![image](http://163yun.nos-eastchina1.126.net/image%2Fspring-boot-docker-cloudcomb-7.jpg)
 
 *注：此镜像我已经在蜂巢上公开，地址是：https://c.163.com/hub#/m/repository/?repoId=41359 （你也可以直接在[蜂巢镜像中心](https://c.163.com/hub#/m/home/)搜索：`spring-boot-docker-cloudcomb`），打开收藏，即可直接基于该镜像创建 Spring Boot + Docker 的应用服务。*
 
